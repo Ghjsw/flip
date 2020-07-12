@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      width: 100px;
+      height: 100px;
+      background: red;
+      /* transition: all 1s; */
+    }
+    .totes-at-the-end {
+      margin-top: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+
+  </div>
+  <script>
+  // 获取初始位置
+  var el = document.querySelector('.box');
+  var first = el.getBoundingClientRect();
+
+  // 将其移动到最终位置
+  el.classList.add('totes-at-the-end');
+
+  // 获取最终位置
+  var last = el.getBoundingClientRect();
+
+  // 翻转
+  var invert = first.top - last.top;
+  console.log(invert);
+
+  // 从翻转的位置到最终位置
+  var player = el.animate([
+    { transform: 'translateY(' + invert + 'px)' },
+    { transform: 'translateY(0)' }
+  ], {
+    duration: 3000,
+    easing: 'cubic-bezier(0,0,0.32,1)',
+  });
+  </script>
+</body>
+</html>

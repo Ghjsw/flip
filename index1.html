@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=<div class="dialog-btn"></div>
+  <title>Document</title>
+  <style>
+    *{margin: 0; padding: 0;}
+    .dialog-btn{
+      width: 100px;
+      height: 40px;;
+      background-color: bisque;
+      margin-left: 300px;
+    }
+
+    .dialog-wrapper{
+      display: none;
+      position: fixed;
+      z-index: 99;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      text-align: center;
+    }
+    .dialog{
+      display: inline-block;
+      vertical-align: middle;
+      width: auto;
+      height: auto;
+      transform-origin: 0 0;
+      opacity: 1;
+      transform: scale(1);
+      transition: all 2s;
+      background-color: #7fc5e6;
+      box-shadow: 0 0 42px 7px rgba(0,0,0,0.1);
+      border-radius: 4px;
+      padding: 20px 30px;
+      color: #fff;
+    }
+    .dialog.large{
+      transform: scale(1.5);
+      opacity: 0;
+    }
+    .dialog-wrapper:after{
+      content: '';
+      display: inline-block;
+      vertical-align: middle;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="dialog-btn">Open Dialog</div>
+  <div class="dialog-wrapper">
+    <div class="dialog -large">
+      <h1>click me to close!</h1>
+    </div>
+  </div>
+  <script>
+    let animationTask;
+      const wrapper = document.querySelector('.dialog-wrapper')
+      const dialog = wrapper.querySelector('.dialog')
+      const dialogBtn = document.querySelector('.dialog-btn')
+
+      dialogBtn.addEventListener('click', () => {
+
+        const first = dialogBtn.getBoundingClientRect()
+        wrapper.style.display = 'block'
+        const last = dialog.getBoundingClientRect()
+
+        const dx = first.x - last.x;
+        const dy = first.y - last.y
+        console.log(dx, dy);
+        animationTask = dialog.animate(
+          [
+            {
+              transform: `
+          translate(${dx}px, ${dy}px)
+          scale(${first.width / last.width}, ${first.height / last.height})
+        `,
+              opacity: 0.6
+            },
+            {
+              transform: `
+          translate(0, 0)
+          scale(1, 1)
+        `,
+              opacity: 1
+            }
+          ],
+          {
+            duration: 1000,
+            easing: 'ease'
+          }
+        )
+
+        animationTask.onfinish = () => {
+          animationTask = null
+        }
+
+        dialog.addEventListener('click', () => {
+          !!animationTask && animationTask.cancel()
+          wrapper.style.display = 'none'
+        }, false)
+
+      }, false)
+  </script>
+</body>
+</html>
